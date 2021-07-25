@@ -4,13 +4,15 @@ import { Request, Response } from 'express';
 import { promisify } from 'util';
 import axios from 'axios';
 
-const redis_url = 'redis://127.0.0.1:6379';
+import day02 from './day02';
+
+export const redis_url = 'redis://127.0.0.1:6379';
 
 const app = express();
 const client = redis.createClient(redis_url);
 
-const getAsync = promisify(client.get).bind(client);
-const setAsync = promisify(client.set).bind(client);
+export const getAsync = promisify(client.get).bind(client);
+export const setAsync = promisify(client.set).bind(client);
 
 app.use(express.json());
 
@@ -40,6 +42,8 @@ app.get('/user/:userId', async (req: Request, res: Response) => {
     return res.json(response.data);
   }
 });
+
+app.use('/day02', day02);
 
 app.listen(3000, () => {
   console.log('Application started on port 3000!');
